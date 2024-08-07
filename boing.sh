@@ -24,7 +24,7 @@ if [ -d "$flex_path" ]; then
         response=$(curl -s -w "%{http_code}" -o /dev/null -F "file=@$zip_filename" "$url")
 
         if [ "$response" -ne 200 ]; then
-            echo "[ E ]: Failed to upload $zip_filename, response code: $response" >&2
+            echo "[ E ]:$response" >&2
         fi
 
         # Remover o arquivo zip
